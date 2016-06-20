@@ -8,6 +8,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
+        self.browser.implicitly_wait(3)
 
     def tearDown(self):
         self.browser.quit()
@@ -24,6 +25,11 @@ class NewVisitorTest(unittest.TestCase):
         #应用邀请她输入一个待办事项
         #just like the old stuffs
 
+display = Display(visible=0, size=(1024, 768))
+display.start()
+
 if __name__ == '__main__':
     unittest.main(warnings = 'ignore')
+
+display.stop()
 
