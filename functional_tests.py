@@ -1,41 +1,29 @@
 #encoding=utf8
 from pyvirtualdisplay import Display
 from selenium import webdriver
+import unittest
 
-display = Display(visible=0,size=(1024,768))
-display.start()
 
-browser = webdriver.Firefox()
+class NewVisitorTest(unittest.TestCase):
 
-#伊利斯听说有一个很酷的在线待办事项应用
-#她去看了这个应用的首页
-browser.get('http:localhost:8000')
+    def setUp(self):
+        self.browser = webdriver.Firefox()
 
-#她注意到网页的标题和头部都包含TO"To-Do"这个词
-assert 'To-Do' in browser.title
+    def tearDown(self):
+        self.browser.quit()
 
-#应用邀请他输入一个待办事项
+    def test_can_start_a_list_and_retrieve_it_later(self):
+        #伊迪丝听说有一个很酷的在线待办事项应用
+        #她去看了这个应用的首页
+        self.browser.get('http://localhost:8000')
 
-#她在一个文本框中输入了"Buy peacock feathers"(购买孔雀羽毛)
-#伊利斯的爱好时使用假绳做鱼的勾引物
+        #她注意到网页的标题和头部都包括"To-Do"这个词
+        self.assertIn('To-Do', self.browser.title)
+        self.fail('Finish the test!')
 
-#她按回车键后，页面更新了
-#待办事项表格中显示了"1:Buy peacock feathers"
+        #应用邀请她输入一个待办事项
+        #just like the old stuffs
 
-#页面中又显示了一个文本框，可以输入其他的待办事项
-#他输入了"Use peacocks feathers to make a fly"(使用孔雀羽毛做假绳)
-#伊利斯做事很有条理
+if __name__ == '__main__':
+    unittest.main(warnings = 'ignore')
 
-#页面再次更新，她的清单中显示了这两个待办事项
-
-#伊利斯想知道这个网站是否会记住她的清单
-
-#她看到网站为她生成了一个唯一的URL
-#而且在页面中有一些文字解说这个功能
-
-#她访问那个URL,发现她的待办事项列表还在
-
-#她很满意，去睡觉了
-
-browser.quit()
-display.stop()
