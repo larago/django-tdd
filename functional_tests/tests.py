@@ -73,8 +73,8 @@ class NewVisitorTest(LiveServerTestCase):
         #页面中看不到伊迪丝的清单
         self.browser.get(self.live_server_url)
         page_text = self.browser.find_element_by_tag_name('body').text
-        assertNotIn('Buy peacock feathers', page_text)
-        assertNotIn('Use peacock feathers to make a fly', page_text)
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertNotIn('Use peacock feathers to make a fly', page_text)
 
         #弗朗西斯输入一个新待办事项，新建一个清单
         #他不像伊迪丝那样有兴趣
