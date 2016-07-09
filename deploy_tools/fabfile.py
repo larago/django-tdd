@@ -4,6 +4,10 @@ import random
 
 REPO_URL = 'https://github.com/larago/django-tdd.git'
 
+def login():
+    env.hosts=['ec2-54-186-167-71.us-west-2.compute.amazonaws.com']
+    env.key_filename="/home/aws.pem"
+
 def deploy():
     site_folder = '/home/%s/sites/%s' % (env.user, env.host)
     source_folder = site_folder + '/source'
@@ -27,17 +31,17 @@ def _get_latest_source(source_folder):
     run('cd %s && git reset --hard %s' % (source_folder, current_commit))
 
 def _update_settings(source_folder, site_name):
-    settings_path = source + '/superlists/settings.py'
+    settings_path = source_folder + '/superlists/settings.py'
     sed(settings_path, "DEBUG=True", "DEBUG=False")
     sed(settings_path,
         'ALLOW_HOSTS = .+$',
         'ALLOW_HOSTS = ["%s"]' % (site_name,)
     )
     secret_key_file = source_folder + '/superlists/secret_key.py'
-    if not exists(secret_key_files):
+    if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
-        append(secret_key_file, "SECRET_KEY = '%s'" % (keys,))
+        append(secret_key_file, "SECRET_KEY = '%s'" % (key,))
     append(settings_path, '\nfrom .secret_key import SECRET_KEY')
 
 def _update_virtualenv(source_folder):
